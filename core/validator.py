@@ -84,7 +84,10 @@ class Validator:
         Logs a validated action to the database via the DatabaseInterface.
         """
         try:
+            import uuid
+            action_id = f"action_{uuid.uuid4().hex[:16]}"
             action_data = {
+                "id": action_id,
                 "session_id": action.session_id,
                 "player_id": action.player_id,
                 "action_type": action.action_type,
