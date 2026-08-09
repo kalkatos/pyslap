@@ -101,6 +101,7 @@ class Session:
 class SessionResponse:
     """Response returned when a session is created or joined."""
     session_id: str
+    game_id: str
     token: str
     state: GameState
     lobby_id: Optional[str] = None

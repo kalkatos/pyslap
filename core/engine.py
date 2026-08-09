@@ -205,6 +205,7 @@ class PySlapEngine:
                         client_state = state.to_player_state(player.player_id)
                         return SessionResponse(
                             session_id=s_id,
+                            game_id=game_id,
                             token=player.token,
                             state=client_state,
                             lobby_id=session.lobby_id
@@ -282,6 +283,7 @@ class PySlapEngine:
 
         return SessionResponse(
             session_id=session_id,
+            game_id=game_id,
             token=player.token,
             state=client_state,
             lobby_id=lobby_id

@@ -81,4 +81,18 @@ class GameRules(ABC):
         """
         return set()
 
+    def get_default_game_config (self) -> dict[str, Any]:
+        """
+        Returns default GameConfig values for this game.
+
+        Override in subclasses to set game-specific defaults
+        (update interval, max players, timeouts, etc.).
+        The engine writes these once to the database on startup
+        so every session can read them without hardcoding defaults.
+        """
+        return {
+            "update_interval_ms": 5000,
+            "max_players": 2,
+        }
+
 
