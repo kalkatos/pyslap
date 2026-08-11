@@ -95,4 +95,19 @@ class GameRules(ABC):
             "max_players": 2,
         }
 
+    def get_game_info (self) -> dict[str, Any]:
+        """
+        Returns game metadata for the lobby / API.
+
+        Override in subclasses to provide game-specific info.
+        Default: returns a minimal stub — subclasses MUST override this.
+        """
+        return {
+            "id": getattr(self, "GAME_ID", "unknown"),
+            "name": getattr(self, "GAME_NAME", "Unknown Game"),
+            "description": getattr(self, "GAME_DESCRIPTION", ""),
+            "min_players": getattr(self, "MIN_PLAYERS", 2),
+            "max_players": getattr(self, "MAX_PLAYERS", 2),
+        }
+
 
