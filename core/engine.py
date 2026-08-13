@@ -563,6 +563,7 @@ class PySlapEngine:
 
         config_data = self.db.read("game_configs", session.game_id) or {}
         config_data.pop("id", None)
+        config_data.pop("game_id", None)
         config = GameConfig(game_id=session.game_id, **config_data)
 
         # 2. Check Session Timeouts
@@ -653,10 +654,15 @@ class PySlapEngine:
 
                 # Check nonce before applying
                 if self.validator.validate_action_nonce(state, action.player_id, action.nonce):
+                    # Advance the player's expected sequence regardless of
+                    # whether the game rules accept the action. Otherwise a
+                    # rule-rejected move (out of turn, illegal cell, etc.)
+                    # would leave the client's next nonce one ahead of the
+                    # server's expectation and permanently lock that player
+                    # out of the session (every later action rejected).
+                    state.last_nonces[action.player_id] = action.nonce
                     if rules.validate_action(action, state):
                         state = rules.apply_action(action, state, rng)
-                        # Update local state nonce to prevent replays
-                        state.last_nonces[action.player_id] = action.nonce
 
                 # Mark action as processed
                 raw_act["processed"] = True
